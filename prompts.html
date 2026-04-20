@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QM III Prompt Library – Flip Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #ffffff;
+        margin: 0;
+        padding: 40px;
+        color: #222;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 40px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 25px;
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .card {
+        perspective: 1000px;
+    }
+
+    .inner {
+        position: relative;
+        width: 100%;
+        height: 180px;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        cursor: pointer;
+    }
+
+    .card:hover .inner {
+        transform: rotateY(180deg);
+    }
+
+    .front, .back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .front {
+        font-size: 1.1rem;
+    }
+
+    .back {
+        transform: rotateY(180deg);
+        font-size: 0.95rem;
+        line-height: 1.4;
+        font-weight: 400;
+    }
+
+    /* Colors */
+    .blue { background: #2A6BF4; }
+    .orange { background: #F4A62A; }
+</style>
+</head>
+
+<body>
+
+<h1>QM III – Interactive Prompt Library</h1>
+
+<div class="grid">
+
+    <!-- Q‑E1 -->
+    <div class="card">
+        <div class="inner">
+            <div class="front blue">Q‑E1 – Kurzdefinition</div>
+            <div class="back blue">Gib eine kurze, präzise Definition des Begriffs. Keine Beispiele, keine Rückfragen.</div>
+        </div>
+    </div>
+
+    <!-- Q‑E2 -->
+    <div class="card">
+        <div class="inner">
+            <div class="front blue">Q‑E2 – Intuitive Erklärung</div>
+            <div class="back blue">Erkläre den Begriff in einfachen Worten, so dass Studierende eine erste Vorstellung bekommen. Keine Rückfragen.</div>
+        </div>
+    </div>
+
+    <!-- Q‑E3 -->
+    <div class="card">
+        <div class="inner">
+            <div class="front blue">Q‑E3 – Formale Erklärung</div>
+            <div class="back blue">Gib die formale Definition aus dem Skript wieder. Keine Beispiele, keine Rückfragen.</div>
+        </div>
+    </div>
+
+    <!-- Q‑E4 -->
+    <div class="card">
+        <div class="inner">
+            <div class="front blue">Q‑E4 – Beispiel aus dem Skript</div>
+            <div class="back blue">Gib ein Beispiel aus dem Skript oder den Unterlagen wieder. Keine Rückfragen. Keine Aufgaben.</div>
+        </div>
+    </div>
+
+    <!-- Q‑E5 -->
+    <div class="card">
+        <div class="inner">
+            <div class="front blue">Q‑E5 – Vollständige Erklärung</div>
+            <div class="back blue">Erkläre den Begriff warm, intuitiv und formal korrekt. Verwende ein Beispiel aus dem Skript und nenne die Quelle. Keine Rückfragen.</div>
+        </div>
+    </div>
+
+    <!-- Q‑Ü1 -->
+    <div class="card">
+        <div class="inner">
+            <div class="front orange">Q‑Ü1 – Verständnisfrage</div>
+            <div class="back orange">Stelle genau eine offene, abstrakte Verständnisfrage ohne Werte, Beispiele, Szenarien oder eindeutige Lösungen.</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
