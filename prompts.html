@@ -1,320 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>QM III Prompt Library – Flip Cards</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QM III Prompt Library</title>
 
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-        background: #ffffff;
-        margin: 0;
-        padding: 40px;
-        color: #222;
-    }
+    <!-- Roboto Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    h1 {
-        text-align: center;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f7f7f7;
+            display: flex;
+        }
 
-    h2 {
-        text-align: center;
-        font-weight: 400;
-        margin-top: 0;
-        margin-bottom: 40px;
-        color: #555;
-        font-size: 0.95rem;
-    }
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #1f1f1f;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
 
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 25px;
-        max-width: 1200px;
-        margin: auto;
-    }
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
 
-    .card {
-        perspective: 1000px;
-    }
+        .nav-link {
+            display: block;
+            color: #dcdcdc;
+            text-decoration: none;
+            margin: 12px 0;
+            font-size: 15px;
+            transition: 0.2s;
+        }
 
-    .inner {
-        position: relative;
-        width: 100%;
-        height: 210px;
-        text-align: center;
-        transition: transform 0.6s;
-        transform-style: preserve-3d;
-        cursor: pointer;
-    }
+        .nav-link:hover {
+            color: white;
+            margin-left: 4px;
+        }
 
-    .card:hover .inner {
-        transform: rotateY(180deg);
-    }
+        /* Main Content */
+        .content {
+            margin-left: 260px;
+            padding: 40px;
+            width: calc(100% - 260px);
+            box-sizing: border-box;
+        }
 
-    .front, .back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 18px;
-        color: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+        section {
+            margin-bottom: 80px;
+        }
 
-    .front {
-        font-size: 1.05rem;
-        font-weight: 600;
-    }
+        section h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
 
-    .front span {
-        display: block;
-        margin-top: 6px;
-        font-size: 0.85rem;
-        font-weight: 400;
-        opacity: 0.9;
-    }
+        /* Flip Card Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-    .back {
-        transform: rotateY(180deg);
-        font-size: 0.9rem;
-        line-height: 1.4;
-        font-weight: 400;
-    }
+        /* Flip Card */
+        .card {
+            perspective: 1000px;
+        }
 
-    /* Colors */
-    .system { background: #4b5563; }   /* grey */
-    .blue   { background: #2A6BF4; }   /* E */
-    .orange { background: #F4A62A; }   /* Ü */
-    .green  { background: #16A34A; }   /* N */
-    .purple { background: #7C3AED; }   /* V */
-</style>
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .card-front {
+            background: #2A6BF4; /* Default blue */
+        }
+
+        .card-back {
+            background: #333;
+            transform: rotateY(180deg);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Category Colors */
+        .orange { background: #F4A62A !important; }
+        .grey { background: #555 !important; }
+    </style>
 </head>
 
 <body>
 
-<h1>QM III – Offizielle Prompt-Bibliothek</h1>
-<h2>Flip‑Cards für NotebookLM – System, Erklärung, Übung, neue Aufgaben, Validierung</h2>
-
-<div class="grid">
-
-    <!-- Q‑SR -->
-    <div class="card">
-        <div class="inner">
-            <div class="front system">
-                Q‑SR – System Reminder
-                <span>Rolle, Quellen, Stil</span>
-            </div>
-            <div class="back system">
-                Du bist Tutor für QM III (Wahrscheinlichkeitsrechnung). Verwende ausschließlich die bereitgestellten Referenzen (Skript, Aufgaben, Musterlösungen, Formelsammlung). Nutze keine externen Quellen. Wenn etwas nicht in den bereitgestellten Quellen steht, sage: „Nicht in den bereitgestellten Quellen.“ Erfinde niemals Inhalte oder Quellen. Erkläre klar, freundlich und didaktisch. Bei Definitionen: warm, motivierend, ohne Rückfragen, kein Active Learning. Bei Übungen: Active Learning aktivieren (zuerst Verständnisfragen), immer freundlich‑fehlerakzeptierend formulieren. Zitiere immer die Quelle (Skript/Folie/Seite).
-            </div>
-        </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>QM III Prompt Library</h2>
+        <a class="nav-link" href="#sr">Systemrolle</a>
+        <a class="nav-link" href="#e">Erklärungs‑Prompts</a>
+        <a class="nav-link" href="#u">Übungs‑Prompts</a>
+        <a class="nav-link" href="#n">Neue Aufgaben</a>
+        <a class="nav-link" href="#v">Validierung</a>
     </div>
 
-    <!-- Q‑E1 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front blue">
-                Q‑E1 – Wahrscheinlichkeitsraum
-                <span>Intuitiv + formal + Beispiel</span>
-            </div>
-            <div class="back blue">
-                Erkläre den Wahrscheinlichkeitsraum freundlich und einsteigerorientiert („Stell dir vor…“, „Ganz einfach gesagt…“). Danach die formale Definition mit Ω, Ereignissen und Wahrscheinlichkeitsmaß P. Gib ein kleines Beispiel und nenne die Quelle aus den bereitgestellten Unterlagen.
-            </div>
-        </div>
-    </div>
+    <!-- Content -->
+    <div class="content">
 
-    <!-- Q‑E2 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front blue">
-                Q‑E2 – Kolmogorov Axiome
-                <span>Intuition + drei Axiome</span>
+        <!-- Systemrolle -->
+        <section id="sr">
+            <h2>Systemrolle</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front grey">Q‑SR — System Reminder</div>
+                        <div class="card-back">
+                            Du bist Tutor für QM III. Verwende ausschließlich bereitgestellte Quellen. Keine externen Inhalte. Bei Definitionen: warm & klar. Bei Übungen: Active Learning. Quelle immer nennen.
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="back blue">
-                Beginne mit einer intuitiven Idee („Damit Wahrscheinlichkeiten sinnvoll funktionieren…“). Erkläre dann die drei Kolmogorov‑Axiome formal. Nenne die Quelle aus Skript oder Folien.
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Q‑E3 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front blue">
-                Q‑E3 – Bedingte Wahrscheinlichkeit
-                <span>Intuition + Formel + Beispiel</span>
-            </div>
-            <div class="back blue">
-                Erkläre anschaulich, was passiert, wenn wir zusätzlich wissen, dass ein Ereignis B eingetreten ist. Gib dann die formale Definition P(A∣B)=P(A∩B)/P(B). Füge ein Beispiel hinzu und nenne die Quelle.
-            </div>
-        </div>
-    </div>
+        <!-- Erklärungs-Prompts -->
+        <section id="e">
+            <h2>Erklärungs‑Prompts</h2>
+            <div class="grid">
 
-    <!-- Q‑E4 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front blue">
-                Q‑E4 – Unabhängigkeit
-                <span>Intuitiv + Bedingung + Beispiel</span>
-            </div>
-            <div class="back blue">
-                Erkläre freundlich und intuitiv, dass das eine Ereignis das andere nicht beeinflusst. Gib dann die formale Bedingung P(A∩B)=P(A)⋅P(B) an. Füge ein Beispiel hinzu und nenne die Quelle.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">E1 — Wahrscheinlichkeitsraum</div>
+                        <div class="card-back">
+                            Intuitiv erklären („Stell dir vor…“), dann formal (Ω, Ereignisse, P). Beispiel + Quelle.
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Q‑E5 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front blue">
-                Q‑E5 – Totale Wahrscheinlichkeit &amp; Bayes
-                <span>Schrittweise + Formeln + Beispiel</span>
-            </div>
-            <div class="back blue">
-                Erkläre die Formel der totalen Wahrscheinlichkeit und den Satz von Bayes warm und schrittweise. Gib danach die formalen Formeln an. Füge ein Beispiel hinzu und nenne die Quelle [AE6.1] aus den bereitgestellten Unterlagen.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">E2 — Kolmogorov‑Axiome</div>
+                        <div class="card-back">
+                            Intuition („Damit Wahrscheinlichkeiten sinnvoll funktionieren…“). Dann drei Axiome formal. Quelle.
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Q‑Ü1 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front orange">
-                Q‑Ü1 – Schritt für Schritt Lösung
-                <span>Metakognitive Fragen</span>
-            </div>
-            <div class="back orange">
-                Stelle ausschließlich offene, abstrakte Verständnisfragen ohne konkrete Werte, Beispiele oder Aufgabenstellungen. Die Fragen dürfen keine eindeutige Lösung besitzen. Vermeide jede Frage, die Zahlen, Ergebnisräume, Definitionen oder konkrete Szenarien erfordert. Stelle nur metakognitive Fragen, die NotebookLM nicht mit einer Lösung beantworten kann.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">E3 — Bedingte Wahrscheinlichkeit</div>
+                        <div class="card-back">
+                            Intuition („Was passiert, wenn wir zusätzlich wissen…“). Formel P(A|B). Beispiel + Quelle.
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Q‑Ü2 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front orange">
-                Q‑Ü2 – Methode üben
-                <span>Schritte der Methode</span>
             </div>
-            <div class="back orange">
-                Frage zuerst nach der Methode, die der Studierende kennt. Nutze dann [AE7.1], um die Schritte nacheinander gemeinsam durchzugehen. Nenne die Quelle aus den bereitgestellten Unterlagen.
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Q‑Ü3 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front orange">
-                Q‑Ü3 – Fehleranalyse
-                <span>Lösungsweg + Fehlerquellen</span>
-            </div>
-            <div class="back orange">
-                Bitte zuerst um den eigenen Lösungsweg des Studierenden. Identifiziere dann mögliche Fehlerquellen und erkläre sie freundlich und konstruktiv. Nenne die passende Quelle.
-            </div>
-        </div>
-    </div>
+        <!-- Übungs-Prompts -->
+        <section id="u">
+            <h2>Übungs‑Prompts</h2>
+            <div class="grid">
 
-    <!-- Q‑Ü4 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front orange">
-                Q‑Ü4 – Alternative Herleitung
-                <span>Andere Sichtweise</span>
-            </div>
-            <div class="back orange">
-                Frage zuerst, welche Methode bisher verwendet wurde. Gib dann eine alternative Herleitung oder einen anderen Zugang zum gleichen Ergebnis. Nenne die Quelle.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front orange">Ü1 — Schritt‑für‑Schritt</div>
+                        <div class="card-back">
+                            1–2 Verständnisfragen. Dann Schritt‑für‑Schritt‑Herleitung. Rückfragen. Quelle.
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Q‑Ü5 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front orange">
-                Q‑Ü5 – Numerische Stabilität
-                <span>Rundungsfehler &amp; Numerik</span>
-            </div>
-            <div class="back orange">
-                Frage zuerst, ob Rundungsfehler oder numerische Probleme erwartet werden. Erkläre dann die numerischen Aspekte der Rechnung und mögliche Stabilitätsprobleme. Nenne die Quelle.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front orange">Ü3 — Fehleranalyse</div>
+                        <div class="card-back">
+                            Erst Lösungsweg anfordern. Dann Fehler identifizieren. Freundlich. Quelle.
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Q‑Ü6 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front orange">
-                Q‑Ü6 – Transferaufgabe
-                <span>Modellierung &amp; Transfer</span>
-            </div>
-            <div class="back orange">
-                Frage zuerst, wie der Studierende das Problem modellieren würde. Gib dann eine Transferlösung, die zeigt, wie das bekannte Konzept auf eine neue Situation angewendet werden kann. Nenne die Quelle.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front orange">Ü6 — Transfer</div>
+                        <div class="card-back">
+                            Erst Modellierung des Studierenden. Dann Transferlösung. Quelle.
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Q‑N1 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front green">
-                Q‑N1 – Neue vollständige Übungsaufgabe
-                <span>Neue Aufgabe im Tutoriums‑Stil</span>
             </div>
-            <div class="back green">
-                Stelle zuerst 1–2 Verständnisfragen zum gewünschten Thema, um Schwierigkeitsgrad und Fokus zu klären. Erstelle danach eine vollständig neue Aufgabe im Stil der Tutoriumsaufgaben mit klaren Unterpunkten (z. B. a–d). Die Aufgabe muss eindeutig als neu generiert erkennbar sein und darf keine offiziellen Aufgaben imitieren oder kopieren. Die Lösung wird nur auf Nachfrage gegeben. Nenne die Quelle.
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Q‑V1 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front purple">
-                Q‑V1 – Formeln prüfen
-                <span>Nur bereitgestellte Quellen</span>
+        <!-- Neue Aufgaben -->
+        <section id="n">
+            <h2>Neue Aufgaben</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front grey">N1 — Neue Aufgabe</div>
+                        <div class="card-back">
+                            1–2 Verständnisfragen. Neue Aufgabe (a–d). Keine Kopien. Lösung nur auf Nachfrage. Quelle.
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="back purple">
-                Prüfe Formeln ausschließlich anhand der bereitgestellten Quellen. Wenn die Korrektheit nicht eindeutig geklärt werden kann, sage: „Nicht in den bereitgestellten Quellen.“ Nenne immer die Quelle.
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Q‑V2 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front purple">
-                Q‑V2 – Zahlen prüfen
-                <span>Rechenweg + Prüfung</span>
-            </div>
-            <div class="back purple">
-                Bitte zuerst um den vollständigen Rechenweg des Studierenden. Prüfe dann Schritt für Schritt anhand der bereitgestellten Quellen. Nenne die Quelle.
-            </div>
-        </div>
-    </div>
+        <!-- Validierung -->
+        <section id="v">
+            <h2>Validierung</h2>
+            <div class="grid">
 
-    <!-- Q‑V3 -->
-    <div class="card">
-        <div class="inner">
-            <div class="front purple">
-                Q‑V3 – Klausurantwort prüfen
-                <span>Struktur &amp; Begründung</span>
-            </div>
-            <div class="back purple">
-                Bitte zuerst um die vollständige Antwort des Studierenden. Prüfe dann Struktur, Begründung und Quellenbezug der Antwort. Nenne die passende Quelle aus den bereitgestellten Materialien.
-            </div>
-        </div>
-    </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front grey">V1 — Formeln prüfen</div>
+                        <div class="card-back">
+                            Nur anhand der Quellen prüfen. Bei Unklarheit: „Nicht in den bereitgestellten Quellen.“ Quelle.
+                        </div>
+                    </div>
+                </div>
 
-</div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front grey">V2 — Zahlen prüfen</div>
+                        <div class="card-back">
+                            Erst Rechenweg anfordern. Dann Schritt‑für‑Schritt prüfen. Quelle.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front grey">V3 — Klausurantwort prüfen</div>
+                        <div class="card-back">
+                            Erst vollständige Antwort anfordern. Dann Struktur & Quellen prüfen.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
 
 </body>
 </html>
