@@ -92,15 +92,13 @@
             transform: rotateY(180deg);
         }
 
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
+        /* FRONT */
+        .card-front {
+            background: #2A6BF4;
+            color: white;
             border-radius: 12px;
             padding: 20px;
             box-sizing: border-box;
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -108,17 +106,19 @@
             font-weight: 500;
         }
 
-        .card-front {
-            background: #2A6BF4;
-        }
-
+        /* BACK — FIXED VERSION */
         .card-back {
             background: #333;
+            color: white;
+            border-radius: 12px;
+            padding: 15px 12px;
+            box-sizing: border-box;
             transform: rotateY(180deg);
             font-size: 14px;
             line-height: 1.55;
-            overflow-y: auto;
-            padding: 15px 12px;
+            overflow-y: auto; /* scrollable */
+            display: block;   /* FIX: no flex centering */
+            text-align: left; /* FIX: text starts at top */
         }
 
         /* Category Colors */
@@ -131,6 +131,7 @@
             overflow-y: auto;
             padding: 15px 12px;
             line-height: 1.55;
+            display: block;
         }
 
         @media (max-width: 768px) {
