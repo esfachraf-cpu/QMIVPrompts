@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -82,7 +82,7 @@
         .card-inner {
             position: relative;
             width: 100%;
-            height: 220px;
+            height: 230px;
             transition: transform 0.6s;
             transform-style: preserve-3d;
             cursor: pointer;
@@ -109,7 +109,7 @@
         }
 
         .card-front {
-            background: #2A6BF4; /* Default blue */
+            background: #2A6BF4; /* Default blue for E-Prompts */
         }
 
         .card-back {
@@ -122,6 +122,18 @@
         /* Category Colors */
         .orange { background: #F4A62A !important; }
         .grey { background: #555 !important; }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -148,7 +160,8 @@
                     <div class="card-inner">
                         <div class="card-front grey">Q‑SR — System Reminder</div>
                         <div class="card-back">
-                            Du bist Tutor für QM III. Verwende ausschließlich bereitgestellte Quellen. Keine externen Inhalte. Bei Definitionen: warm & klar. Bei Übungen: Active Learning. Quelle immer nennen.
+                            Du bist Tutor für Quantitative Methoden, insb. Wahrscheinlichkeitsrechnung. Arbeite ausschließlich mit den bereitgestellten Quellen. Wenn etwas nicht in den Quellen steht: „Nicht in den bereitgestellten Quellen.“<br><br>
+                            Erkläre klar, freundlich, strukturiert. Bei Definitionen: keine Rückfragen, kein Active Learning. Bei Übungen: Active Learning (zuerst Verständnisfragen). Immer freundlich, fehlerakzeptierend. Tiefe & Tempo an Leistungsniveau anpassen. Unklare Fragen: immer 1–2 Präzisierungsfragen, nie direkt erklären. Immer Quelle nennen. Nie Inhalte, Beispiele oder Quellen erfinden.
                         </div>
                     </div>
                 </div>
@@ -162,27 +175,45 @@
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front">E1 — Wahrscheinlichkeitsraum</div>
+                        <div class="card-front">Q‑E1 — Wahrscheinlichkeitsraum</div>
                         <div class="card-back">
-                            Intuitiv erklären („Stell dir vor…“), dann formal (Ω, Ereignisse, P). Beispiel + Quelle.
+                            Erkläre den Wahrscheinlichkeitsraum freundlich und einsteigerorientiert („Stell dir vor…“, „Ganz einfach gesagt…“). Dann die formale Definition (Ω, Ereignisse, P). Kurzes Beispiel. Quelle nennen.
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front">E2 — Kolmogorov‑Axiome</div>
+                        <div class="card-front">Q‑E2 — Kolmogorov‑Axiome</div>
                         <div class="card-back">
-                            Intuition („Damit Wahrscheinlichkeiten sinnvoll funktionieren…“). Dann drei Axiome formal. Quelle.
+                            Beginne mit einer intuitiven Idee („Damit Wahrscheinlichkeiten sinnvoll funktionieren…“). Dann die drei Axiome formal darstellen. Quelle nennen.
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front">E3 — Bedingte Wahrscheinlichkeit</div>
+                        <div class="card-front">Q‑E3 — Bedingte Wahrscheinlichkeit</div>
                         <div class="card-back">
-                            Intuition („Was passiert, wenn wir zusätzlich wissen…“). Formel P(A|B). Beispiel + Quelle.
+                            Erst anschaulich erklären („Was passiert, wenn wir zusätzlich wissen…“). Dann die formale Definition P(A|B)=P(A∩B)/P(B). Beispiel + Quelle.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">Q‑E4 — Unabhängigkeit</div>
+                        <div class="card-back">
+                            Intuitive Erklärung („Das eine beeinflusst das andere nicht…“). Dann die formale Bedingung P(A∩B)=P(A)⋅P(B). Beispiel + Quelle.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">Q‑E5 — Totale Wahrscheinlichkeit &amp; Bayes</div>
+                        <div class="card-back">
+                            Beide Formeln warm und schrittweise erklären. Dann die formalen Formeln. Beispiel + Quelle.
                         </div>
                     </div>
                 </div>
@@ -197,27 +228,54 @@
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front orange">Ü1 — Schritt‑für‑Schritt</div>
+                        <div class="card-front orange">Q‑Ü1 — Schritt‑für‑Schritt‑Lösung</div>
                         <div class="card-back">
-                            1–2 Verständnisfragen. Dann Schritt‑für‑Schritt‑Herleitung. Rückfragen. Quelle.
+                            Zuerst 1–2 offene Verständnisfragen, um zu klären, wie der Studierende das Problem versteht. Dann die Lösung Schritt für Schritt herleiten, mit kurzen Rückfragen („Wie würdest du hier weitermachen?“). Keine Zahlen erfinden. Quelle nennen.
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front orange">Ü3 — Fehleranalyse</div>
+                        <div class="card-front orange">Q‑Ü2 — Methode üben</div>
                         <div class="card-back">
-                            Erst Lösungsweg anfordern. Dann Fehler identifizieren. Freundlich. Quelle.
+                            Zuerst nach der Methode fragen, die der Studierende kennt. Dann die Schritte dieser Methode nacheinander gemeinsam durchgehen. Quelle nennen.
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front orange">Ü6 — Transfer</div>
+                        <div class="card-front orange">Q‑Ü3 — Fehleranalyse</div>
                         <div class="card-back">
-                            Erst Modellierung des Studierenden. Dann Transferlösung. Quelle.
+                            Zuerst um den eigenen Lösungsweg bitten. Dann Fehlerquellen identifizieren und freundlich, konstruktiv erklären. Quelle nennen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front orange">Q‑Ü4 — Alternative Herleitung</div>
+                        <div class="card-back">
+                            Zuerst fragen, welche Methode bisher verwendet wurde. Dann eine alternative Herleitung oder Sichtweise geben. Quelle nennen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front orange">Q‑Ü5 — Numerische Stabilität</div>
+                        <div class="card-back">
+                            Zuerst fragen, ob Rundungsfehler oder numerische Probleme erwartet werden. Dann die numerischen Aspekte der Rechnung erklären. Quelle nennen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front orange">Q‑Ü6 — Transferaufgabe</div>
+                        <div class="card-back">
+                            Zuerst fragen, wie der Studierende das Problem modellieren würde. Dann eine Transferlösung geben, die zeigt, wie das Konzept auf eine neue Situation angewendet wird. Quelle nennen.
                         </div>
                     </div>
                 </div>
@@ -231,9 +289,9 @@
             <div class="grid">
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front grey">N1 — Neue Aufgabe</div>
+                        <div class="card-front grey">Q‑N1 — Neue vollständige Übungsaufgabe</div>
                         <div class="card-back">
-                            1–2 Verständnisfragen. Neue Aufgabe (a–d). Keine Kopien. Lösung nur auf Nachfrage. Quelle.
+                            Zuerst 1–2 Verständnisfragen zum gewünschten Thema, um Schwierigkeitsgrad und Fokus zu klären. Danach eine vollständig neue Aufgabe im Stil der Tutoriumsaufgaben mit klaren Unterpunkten (z. B. a–d) erstellen. Aufgabe muss eindeutig neu sein und darf keine offiziellen Aufgaben imitieren oder kopieren. Lösung nur auf Nachfrage. Quelle nennen.
                         </div>
                     </div>
                 </div>
@@ -247,27 +305,27 @@
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front grey">V1 — Formeln prüfen</div>
+                        <div class="card-front grey">Q‑V1 — Formeln prüfen</div>
                         <div class="card-back">
-                            Nur anhand der Quellen prüfen. Bei Unklarheit: „Nicht in den bereitgestellten Quellen.“ Quelle.
+                            Formeln ausschließlich anhand der bereitgestellten Quellen prüfen. Wenn nicht eindeutig: „Nicht in den bereitgestellten Quellen.“ Quelle nennen.
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front grey">V2 — Zahlen prüfen</div>
+                        <div class="card-front grey">Q‑V2 — Zahlen prüfen</div>
                         <div class="card-back">
-                            Erst Rechenweg anfordern. Dann Schritt‑für‑Schritt prüfen. Quelle.
+                            Zuerst um den vollständigen Rechenweg bitten. Dann Schritt für Schritt anhand der bereitgestellten Quellen prüfen. Quelle nennen.
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-inner">
-                        <div class="card-front grey">V3 — Klausurantwort prüfen</div>
+                        <div class="card-front grey">Q‑V3 — Klausurantwort prüfen</div>
                         <div class="card-back">
-                            Erst vollständige Antwort anfordern. Dann Struktur & Quellen prüfen.
+                            Zuerst um die vollständige Antwort des Studierenden bitten. Dann Struktur, Begründung und Quellenbezug prüfen. Quelle nennen.
                         </div>
                     </div>
                 </div>
