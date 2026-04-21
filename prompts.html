@@ -1,386 +1,292 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>QM III – Promptbibliothek</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg-page: #f5f7fa;
-      --bg-card-front: #ffffff;
-      --bg-card-back: #fafafa;
-      --border-card: #e0e4ea;
-      --text-main: #1f2933;
-      --text-muted: #6b7280;
-      --systemrolle-bg: #3A4750; /* Cool Slate */
-      --systemrolle-text: #f9fafb;
-      --e-color: #2A6BF4;       /* E-Prompts: blau */
-      --u-color: #F4A62A;       /* Ü-Prompts: orange */
-      --font-main: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --radius-card: 10px;
-      --shadow-soft: 0 8px 18px rgba(15, 23, 42, 0.08);
-      --transition-fast: 0.25s ease;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QM III Prompt Library</title>
 
-    * {
-      box-sizing: border-box;
-    }
+    <!-- Roboto Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    body {
-      margin: 0;
-      padding: 1.5rem;
-      font-family: var(--font-main);
-      background: var(--bg-page);
-      color: var(--text-main);
-      line-height: 1.5;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f7f7f7;
+            display: flex;
+        }
 
-    .page-wrapper {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #1f1f1f;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
 
-    header {
-      margin-bottom: 1.5rem;
-    }
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
 
-    header h1 {
-      margin: 0 0 0.25rem;
-      font-size: 1.7rem;
-      font-weight: 600;
-    }
+        .nav-link {
+            display: block;
+            color: #dcdcdc;
+            text-decoration: none;
+            margin: 12px 0;
+            font-size: 15px;
+            transition: 0.2s;
+        }
 
-    header p {
-      margin: 0;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
+        .nav-link:hover {
+            color: white;
+            margin-left: 4px;
+        }
 
-    /* Systemrolle Box */
+        /* Main Content */
+        .content {
+            margin-left: 260px;
+            padding: 40px;
+            width: calc(100% - 260px);
+            box-sizing: border-box;
+        }
 
-    .systemrolle-box {
-      margin: 1.5rem 0 2rem;
-      padding: 1rem 1.2rem;
-      border-radius: 8px;
-      background: var(--systemrolle-bg);
-      color: var(--systemrolle-text);
-      font-size: 0.9rem;
-    }
+        section {
+            margin-bottom: 80px;
+        }
 
-    .systemrolle-title {
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-size: 0.8rem;
-      opacity: 0.9;
-    }
+        section h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
 
-    .systemrolle-content {
-      white-space: pre-line;
-    }
+        /* Flip Card Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-    /* Grid Layout */
+        /* Flip Card */
+        .card {
+            perspective: 1000px;
+        }
 
-    .prompt-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.2rem;
-      align-items: stretch;
-    }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
 
-    /* Flip Cards */
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
 
-    .prompt-card {
-      perspective: 1200px;
-    }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            font-weight: 500;
+        }
 
-    .prompt-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform var(--transition-fast);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-soft);
-    }
+        .card-front {
+            background: #2A6BF4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-    .prompt-card:hover .prompt-inner {
-      transform: rotateY(180deg);
-    }
+        .card-back {
+            background: #333;
+            transform: rotateY(180deg);
+            font-size: 14px;
+            line-height: 1.55;
+            overflow-y: auto;
+            padding: 15px 12px;
+            display: block;
+            text-align: left;
+        }
 
-    .prompt-face {
-      position: relative;
-      width: 100%;
-      min-height: 210px;
-      padding: 1rem 1.1rem 1.1rem;
-      border-radius: var(--radius-card);
-      border: 1px solid var(--border-card);
-      background: var(--bg-card-front);
-      backface-visibility: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+        /* Category Colors */
+        .orange { background: #F4A62A !important; }
+        .grey { background: #555 !important; }
+        .green { background: #2A8C55 !important; }
+        .red { background: #E53935 !important; } /* Q-K */
 
-    .prompt-back {
-      background: var(--bg-card-back);
-      transform: rotateY(180deg);
-    }
+        /* SYSTEMROLLE — STATIC BOX */
+        .system-box {
+            background: #3A4750;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            line-height: 1.6;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-    .prompt-type {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.35rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .prompt-type-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-    }
-
-    .prompt-type.e .prompt-type-dot {
-      background: var(--e-color);
-    }
-
-    .prompt-type.u .prompt-type-dot {
-      background: var(--u-color);
-    }
-
-    .prompt-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0 0 0.4rem;
-    }
-
-    .prompt-tagline {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin: 0 0 0.6rem;
-    }
-
-    .prompt-body {
-      font-size: 0.85rem;
-      color: var(--text-main);
-    }
-
-    .prompt-body pre {
-      margin: 0.4rem 0 0;
-      font-family: var(--font-main);
-      font-size: 0.8rem;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .prompt-footer {
-      margin-top: 0.7rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .prompt-label {
-      font-weight: 500;
-    }
-
-    /* Mobile: tap to flip */
-
-    @media (hover: none) and (pointer: coarse) {
-      .prompt-card {
-        cursor: pointer;
-      }
-      .prompt-card.active .prompt-inner {
-        transform: rotateY(180deg);
-      }
-    }
-  </style>
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="page-wrapper">
-    <header>
-      <h1>QM III – Promptbibliothek</h1>
-      <p>Flip‑Cards für System‑, Erklär‑, Übungs‑ und Klausurprompts.</p>
-    </header>
 
-    <!-- SYSTEMROLLE (EDITIERBARER BLOCK) -->
-    <section class="systemrolle-box">
-      <div class="systemrolle-title">Systemrolle (Auszug)</div>
-      <div class="systemrolle-content">
-Du bist ein Tutor für QM III (Wahrscheinlichkeitstheorie).
-Antworte formal korrekt, aber knapp und klar.
-Passe den Modus an: Erklärung, Übung, neue Aufgabe, Klausur.
-      </div>
-    </section>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>QM III Prompt Library</h2>
+        <a class="nav-link" href="#sr">Systemrolle</a>
+        <a class="nav-link" href="#e">Erklärungs Prompts</a>
+        <a class="nav-link" href="#u">Übungs Prompts</a>
+        <a class="nav-link" href="#n">Neue Aufgaben</a>
+        <a class="nav-link" href="#v">Validierung</a>
+        <a class="nav-link" href="#k">Klausurmodus</a>
+    </div>
 
-    <!-- PROMPT GRID -->
-    <main class="prompt-grid">
+    <!-- Content -->
+    <div class="content">
 
-      <!-- CARD 1 – ERKLÄRUNGSPROMPT (E) -->
-      <article class="prompt-card">
-        <div class="prompt-inner">
-          <!-- FRONT -->
-          <div class="prompt-face">
-            <div>
-              <div class="prompt-type e">
-                <span class="prompt-type-dot"></span>
-                <span>Erklär‑Prompt (Q‑E)</span>
-              </div>
-              <h2 class="prompt-title">Wahrscheinlichkeitsraum erklären</h2>
-              <p class="prompt-tagline">Warm, anschaulich, dann formal, mit Quelle.</p>
-              <div class="prompt-body">
-                <p>Für Studierende, die ein Konzept zum ersten Mal sehen oder wiederholen wollen.</p>
-              </div>
+        <!-- SYSTEMROLLE -->
+        <section id="sr">
+            <h2>Systemrolle</h2>
+
+            <div class="system-box">
+                <strong>Q‑SR — System Reminder</strong><br><br>
+
+                Du bist Tutor für Quantitative Methoden insb. Wahrscheinlichkeitsrechnung.  
+                Arbeite ausschließlich mit den bereitgestellten Quellen (Skript, Tutoriumsaufgaben, Musterlösungen, Formelsammlung).  
+                Nutze keine externen Quellen.  
+                Wenn etwas nicht in den bereitgestellten Quellen steht, sage:  
+                <em>„Nicht in den bereitgestellten Quellen.“</em><br><br>
+
+                <strong>Verhalten & Didaktik:</strong><br>
+                – Erkläre klar, freundlich, strukturiert und didaktisch.<br>
+                – Bei Definitionen: warm, motivierend, keine Rückfragen, kein Active Learning.<br>
+                – Bei Übungen: Active Learning aktivieren (zuerst Verständnisfragen).<br>
+                – Verwende immer eine freundliche, fehlerakzeptierende Formulierung.<br>
+                – Passe Tiefe und Tempo an das Leistungsniveau des Studierenden an.<br><br>
+
+                <strong>Leitplanken:</strong><br>
+                – Bei unklaren Fragen: 1–2 Präzisierungsfragen.<br>
+                – Immer Quelle nennen.<br>
+                – Keine Inhalte erfinden.
             </div>
-            <div class="prompt-footer">
-              <span class="prompt-label">Niveau: Basis</span>
-              <span>Skript: Abschnitt 2</span>
-            </div>
-          </div>
+        </section>
 
-          <!-- BACK -->
-          <div class="prompt-face prompt-back">
-            <div>
-              <div class="prompt-type e">
-                <span class="prompt-type-dot"></span>
-                <span>Prompt‑Text</span>
-              </div>
-              <div class="prompt-body">
-                <pre>Erklär mir bitte den Wahrscheinlichkeitsraum.
-Geh bitte so vor:
-1. Intuitive, anschauliche Erklärung („Stell dir vor…“)
-2. Formale Definition mit Ω, Ereignissen und P
-3. Kleines Beispiel (z. B. Würfel)
-4. Kurzer Verweis auf Skript/Folie</pre>
-              </div>
-            </div>
-            <div class="prompt-footer">
-              <span class="prompt-label">Modus: Q‑E</span>
-              <span>Keine Rückfragen.</span>
-            </div>
-          </div>
-        </div>
-      </article>
+        <!-- Erklärungs Prompts -->
+        <section id="e">
+            <h2>Erklärungs Prompts</h2>
+            <div class="grid">
 
-      <!-- CARD 2 – ÜBUNGSPROMPT (Ü) -->
-      <article class="prompt-card">
-        <div class="prompt-inner">
-          <!-- FRONT -->
-          <div class="prompt-face">
-            <div>
-              <div class="prompt-type u">
-                <span class="prompt-type-dot"></span>
-                <span>Übungs‑Prompt (Q‑Ü)</span>
-              </div>
-              <h2 class="prompt-title">Active‑Learning‑Aufgabe</h2>
-              <p class="prompt-tagline">Verständnisfragen zuerst, dann Schritt‑für‑Schritt‑Lösung.</p>
-              <div class="prompt-body">
-                <p>Für Studierende, die eine konkrete Aufgabe gemeinsam durchgehen wollen.</p>
-              </div>
-            </div>
-            <div class="prompt-footer">
-              <span class="prompt-label">Niveau: leicht–mittel</span>
-              <span>Skript: Laplace‑Modell</span>
-            </div>
-          </div>
+                <div class="card"><div class="card-inner"><div class="card-front">Q‑E1 — Wahrscheinlichkeitsraum</div><div class="card-back">Einsteigerfreundlich erklären („Stell dir vor…“). Dann formal (Ω, Ereignisse, P). Beispiel + Quelle.</div></div></div>
 
-          <!-- BACK -->
-          <div class="prompt-face prompt-back">
-            <div>
-              <div class="prompt-type u">
-                <span class="prompt-type-dot"></span>
-                <span>Prompt‑Text</span>
-              </div>
-              <div class="prompt-body">
-                <pre>Kannst du mir helfen, diese Aufgabe zu lösen?
+                <div class="card"><div class="card-inner"><div class="card-front">Q‑E2 — Kolmogorov Axiome</div><div class="card-back">Intuitive Idee. Dann drei Axiome formal. Quelle nennen.</div></div></div>
 
-Bitte:
-1. Stelle zuerst 1–2 Verständnisfragen (Active Learning).
-2. Gehe danach Schritt für Schritt durch die Lösung.
-3. Erkläre kurz jeden Schritt.
-4. Nenne am Ende die Quelle (Skript/Folie).</pre>
-              </div>
+                <div class="card"><div class="card-inner"><div class="card-front">Q‑E3 — Bedingte Wahrscheinlichkeit</div><div class="card-back">Anschaulich erklären. Dann P(A|B)=P(A∩B)/P(B). Beispiel + Quelle.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front">Q‑E4 — Unabhängigkeit</div><div class="card-back">Intuition. Dann P(A∩B)=P(A)⋅P(B). Beispiel + Quelle.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front">Q‑E5 — Totale Wahrscheinlichkeit &amp; Bayes</div><div class="card-back">Beide Formeln warm erklären. Dann formal. Beispiel + Quelle.</div></div></div>
+
             </div>
-            <div class="prompt-footer">
-              <span class="prompt-label">Modus: Q‑Ü</span>
-              <span>Fehlerfreundlich.</span>
+        </section>
+
+        <!-- Übungs Prompts -->
+        <section id="u">
+            <h2>Übungs Prompts</h2>
+            <div class="grid">
+
+                <div class="card"><div class="card-inner"><div class="card-front orange">Q‑Ü1 — Schritt‑für‑Schritt‑Lösung</div><div class="card-back">1–2 Verständnisfragen. Dann Schritt‑für‑Schritt‑Herleitung. Rückfragen. Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front orange">Q‑Ü2 — Methode üben</div><div class="card-back">Nach Methode fragen. Schritte gemeinsam durchgehen. Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front orange">Q‑Ü3 — Fehleranalyse</div><div class="card-back">Lösungsweg anfordern. Fehler identifizieren. Freundlich erklären. Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front orange">Q‑Ü4 — Alternative Herleitung</div><div class="card-back">Methode erfragen. Alternative Herleitung geben. Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front orange">Q‑Ü5 — Numerische Stabilität</div><div class="card-back">Nach Rundungsfehlern fragen. Numerische Aspekte erklären. Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front orange">Q‑Ü6 — Transferaufgabe</div><div class="card-back">Modellierung erfragen. Transferlösung geben. Quelle nennen.</div></div></div>
+
             </div>
-          </div>
-        </div>
-      </article>
+        </section>
 
-      <!-- CARD 3 – KLAUSURMODUS (K) -->
-      <article class="prompt-card">
-        <div class="prompt-inner">
-          <!-- FRONT -->
-          <div class="prompt-face">
-            <div>
-              <div class="prompt-type e">
-                <span class="prompt-type-dot" style="background: #111827;"></span>
-                <span>Klausur‑Prompt (Q‑K)</span>
-              </div>
-              <h2 class="prompt-title">Klausuraufgabe generieren</h2>
-              <p class="prompt-tagline">Knapp, präzise, formelbasiert, ohne Didaktik.</p>
-              <div class="prompt-body">
-                <p>Für Studierende, die Aufgaben auf Prüfungsniveau üben wollen.</p>
-              </div>
+        <!-- Neue Aufgaben -->
+        <section id="n">
+            <h2>Neue Aufgaben</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front grey">Q‑N1 — Neue vollständige Übungsaufgabe</div>
+                        <div class="card-back">
+                            1–2 Verständnisfragen. Dann neue Aufgabe (a–d). Keine Kopien offizieller Aufgaben. Lösung nur auf Nachfrage. Quelle nennen.
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="prompt-footer">
-              <span class="prompt-label">Niveau: mittel / schwer</span>
-              <span>Stil: Altklausur</span>
+        </section>
+
+        <!-- Validierung -->
+        <section id="v">
+            <h2>Validierung</h2>
+            <div class="grid">
+
+                <div class="card"><div class="card-inner"><div class="card-front green">Q‑V1 — Formeln prüfen</div><div class="card-back">Nur anhand der Quellen prüfen. Wenn unklar: „Nicht in den bereitgestellten Quellen.“ Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front green">Q‑V2 — Zahlen prüfen</div><div class="card-back">Rechenweg anfordern. Schritt‑für‑Schritt prüfen. Quelle nennen.</div></div></div>
+
+                <div class="card"><div class="card-inner"><div class="card-front green">Q‑V3 — Klausurantwort prüfen</div><div class="card-back">Antwort anfordern. Struktur &amp; Quellen prüfen. Quelle nennen.</div></div></div>
+
             </div>
-          </div>
+        </section>
 
-          <!-- BACK -->
-          <div class="prompt-face prompt-back">
-            <div>
-              <div class="prompt-type e">
-                <span class="prompt-type-dot" style="background: #111827;"></span>
-                <span>Prompt‑Text</span>
-              </div>
-              <div class="prompt-body">
-                <pre>Ich möchte eine Aufgabe auf Klausurniveau.
+        <!-- KLAUSURMODUS -->
+        <section id="k">
+            <h2>Klausurmodus</h2>
+            <div class="grid">
 
-Bitte:
-1. Generiere eine Aufgabe im Stil der QM‑III Klausur.
-2. Sei knapp, präzise, formelbasiert.
-3. Keine Didaktik, keine Warm‑Ups, keine Rückfragen.
-4. Lösung nur auf Nachfrage.</pre>
-              </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front red">Q‑K — Klausurmodus</div>
+                        <div class="card-back">
+                            Knapp, präzise, formelbasiert.  
+                            Keine Didaktik, keine Warm‑Ups, kein Active Learning.  
+                            Niveau: Altklausuren (Stil, Schwierigkeit).  
+                            Neue Klausuraufgabe: zuerst Schwierigkeitsgrad abfragen (mittel/schwer).  
+                            Lösung nur auf Nachfrage.  
+                            Quelle nennen.
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="prompt-footer">
-              <span class="prompt-label">Modus: Q‑K</span>
-              <span>Lösung optional.</span>
-            </div>
-          </div>
-        </div>
-      </article>
+        </section>
 
-      <!-- WEITERE KARTEN: einfach diesen <article class="prompt-card"> Block kopieren und Inhalte anpassen -->
+    </div>
 
-    </main>
-  </div>
-
-  <!-- Mobile: tap-to-flip logic -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const cards = document.querySelectorAll(".prompt-card");
-      cards.forEach(card => {
-        card.addEventListener("click", () => {
-          if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
-            card.classList.toggle("active");
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>
